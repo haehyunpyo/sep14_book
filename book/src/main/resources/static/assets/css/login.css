@@ -1,0 +1,35 @@
+@charset "UTF-8";
+/* 
+
+.body{
+	margin: 0;
+	padding: 0;
+}
+ */
+.Lcontainer{
+	width: 50%;
+	height: 80%;
+	margin-top: 200px;
+	padding: 30px;
+	justify-content: center;
+	flex-direction: column;
+	vertical-align:middle;
+	position: absolute;
+	border: yellow 1px solid;
+} 
+
+
+.form-item{
+	margin: 20px;
+}
+.login-form{
+	margin: 0 auto;
+}
+
+.login-with{
+	margin: 0 auto;
+	position: relative;
+	justify-content: center;
+	
+}
+

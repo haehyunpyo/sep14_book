@@ -10,8 +10,8 @@ public class IndexController {
 		return "index";
 	}
 	
-	@GetMapping({"/test"})
+	@GetMapping({"/HHTest"})
 	public String test() {
-		return "test";
+		return "HHTest";
 	}
 }
