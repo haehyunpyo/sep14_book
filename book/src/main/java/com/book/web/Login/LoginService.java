@@ -82,9 +82,9 @@ public class LoginService {
       
       
    // 카카오에 토큰전송 & 사용자정보받기
-      public  Map<String, Object> getKakaoUser(String token){
+      public  Map<String, Object> getKakaoUser(String access_Token){
 
-          Map<String, Object> map = new HashMap<>();
+          Map<String, Object> kmap = new HashMap<>();
 
           String reqURL = "https://kapi.kakao.com/v2/user/me";
           String email = "";
@@ -97,7 +97,7 @@ public class LoginService {
 
               conn.setRequestMethod("POST");
               conn.setDoOutput(true);
-              conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+              conn.setRequestProperty("Authorization", "Bearer " + access_Token); //전송할 header 작성, access_token전송
 
               //결과 코드가 200이라면 성공
               int responseCode = conn.getResponseCode();
@@ -134,10 +134,10 @@ public class LoginService {
               System.out.println("email : " + email);
               //System.out.println("nickname : " + nickname);
               
-              map.put("kid", id);
-              map.put("kemail", email);
+              kmap.put("kid", id);
+              kmap.put("kemail", email);
               
-              System.out.println(map); // {kid=3002751483, kemail=gogus228@hanmail.net}
+              //System.out.println(kmap); // {kid=3002751483, kemail=gogus228@hanmail.net}
 
               br.close();
 
@@ -145,7 +145,7 @@ public class LoginService {
               e.printStackTrace();
           }
           
-          return map;
+          return kmap;
       }
 
 
@@ -153,9 +153,26 @@ public class LoginService {
 		return loginDAO.login(map);
 	}
 
-	public Map<String, Object> autoLogin(String sid) {
-		return loginDAO.autoLogin(sid);
+	public int autoCheck(String sid) {
+		return loginDAO.autoCheck(sid);
 	}
+
+	public int hasKakaoUser(Map<String, Object> kUser) {
+		return loginDAO.hasKakaoUser(kUser);
+	}
+
+	public void setKakaoUser(Map<String, Object> kUser) {
+		loginDAO.setKakaoUser(kUser);
+	}
+
+	public Map<String, Object> autoLogin(String suserID) {
+		return loginDAO.autoLogin(suserID);
+	}
+
+
+
+
+
 
 
       

@@ -9,9 +9,16 @@ public interface LoginDAO {
 
 	Map<String, Object> login(Map<String, Object> map);
 
-	Map<String, Object> autoLogin(String sid);
+	int autoCheck(String sid);
 
-	//Map<String, Object> saveUser(Map<String, Object> map);
+	int hasKakaoUser(Map<String, Object> kUser);
+
+	void setKakaoUser(Map<String, Object> kUser);
+
+	Map<String, Object> autoLogin(String suserID);
+
+
+
 
 
 }

@@ -73,11 +73,17 @@ $(function() {
 	//쿠키 검사
 	let userID = getCookie("userID");
 	let setY = getCookie("setY");
-		
-	if(setY == "Y"){
+	let setS = getCookie("setS");
+	
+	
+	if (setS == "S"){
+		alert("자동로그인에 체크함")
+	}
+	else if(setY == "Y"){
 		$("#saveID").prop("checked", true);
 		$("#id").val(userID);
-	} else {
+	} 
+	else{
 		$("#saveID").prop("checked", false);
 	}
 	
@@ -101,25 +107,44 @@ $(function() {
 			check = true;
 		}
 		
-		// 체크박스 로직
-		let saveIDT = $("#saveID").is(":checked"); // 아이디저장
-		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인
+		// 체크여부확인
+		let saveIDT = $("#saveID").is(":checked"); // 아이디저장_ true
+		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인_ true
 		
 		if(saveAllT){
+			alert("S쿠키저장");
+			setCookie("SuserID", id, 2)
+			setCookie("setS", "S", 2)
+			
+			let sid = getCookie("SuserID");
+			let setS = getCookie("setS");
+			
+			$.ajax({
+				url : "./autoLogin",
+				type : "post",
+				data : {sid : sid, setS : setS},
+					dataType : "json",
+					success : function(data) {
+						alert("자동로그인에 체크함")
+						saveIDT = false;
+					},
+					error : function(error) {
+						alert("에러발생");
+						}
+				});
+			
+		} else if(saveIDT) {	// true
+			
 			alert("쿠키저장");
-			alert("세션진행");
-			setCookie("userID", id, 2)
-			setCookie("setY", "Y", 2)
-		} 
-		else if(saveIDT) {
-			alert("쿠키저장");
-			setCookie("userID", id, 2)
-			setCookie("setY", "Y", 2)
-		}	
-		else if(!saveIDT) {
+			setCookie("userID", id, 2);
+			setCookie("setY", "Y", 2);
+			saveIDT = false;
+			
+		} else if (!saveIDT) {	// false
+			
 			alert("진행x"); 
-			delCookie("userID");
-			delCookie("setY");
+			//delCookie("userID");
+			//delCookie("setY");
 		}
 
 		//login-form 최종제출
