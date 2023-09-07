@@ -12,14 +12,37 @@ public class BooklistService {
 	@Autowired
 	private BooklistDAO booklistDAO;
 
-	public List<BooklistDTO> list() {
-		return booklistDAO.list();
+	public List<Map<String, Object>> booklist(Map<String, Object> map) {
+		return booklistDAO.booklist(map);
 	}
 
-	public Map<String, Object> detail(int bkno) {
-		return booklistDAO.detail(bkno);
+	public Map<String, Object> bookdetail(int bkno) {
+		return booklistDAO.bookdetail(bkno);
 	}
 
+	public List<BooklistDTO> booktop() {
+		return booklistDAO.booktop();
+	}
 	
+	// SM
+	public void detail2(CartDTO dto) {
+
+		booklistDAO.detail2(dto);
+	}
+
+	public List<Map<String, Object>> cart() {
+
+		return booklistDAO.cart();
+	}
+
+	public int delete(Map<String, Object> map) {
+
+		return booklistDAO.delete(map);
+	}
+
+	public void cart2(CartDTO dto) {
+		booklistDAO.cart2(dto);
+	}
+
 	
 }

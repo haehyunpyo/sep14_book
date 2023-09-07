@@ -54,7 +54,7 @@
     <!-- Main stylesheet and color file-->
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
-	<link href="assets/css/login.css" rel="stylesheet">
+	<link href="../css/login.css" rel="stylesheet">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="./js//jquery-3.7.0.min.js"></script>
@@ -62,14 +62,13 @@
 
 function kakaoLogin(){
 	location.href="https://kauth.kakao.com/oauth/authorize?client_id=3ecca13d973c6d11e752a114a1e14922&redirect_uri=http://localhost/login/kakao&response_type=code"
-	//window.open("https://kauth.kakao.com/oauth/authorize?client_id=***REST_API***&redirect_uri=http://localhost/login&response_type=code", "_blank", "width=500, height=500");
+	//window.open("https://kauth.kakao.com/oauth/authorize?client_id=3ecca13d973c6d11e752a114a1e14922&redirect_uri=http://localhost/login&response_type=code", "_blank", "width=500, height=500");
 	//opner.document.location.href="http://localhost/"
 }
 
 
 $(function() {
 	
-		
 	//쿠키 검사
 	let userID = getCookie("userID");
 	let setY = getCookie("setY");
@@ -108,8 +107,8 @@ $(function() {
 		}
 		
 		// 체크여부확인
-		let saveIDT = $("#saveID").is(":checked"); // 아이디저장_ true
-		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인_ true
+		let saveIDT = $("#saveID").is(":checked"); // 아이디저장체크_ true
+		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인체크_ true
 		
 		if(saveAllT){
 			alert("S쿠키저장");
@@ -205,10 +204,10 @@ $(function() {
 		<div class="login-form">
 			<form action="/login" method="post" id="frm">
 				<div class="form-item idBox">
-					<label for="id"></label> <input type="text" name="id" id="id" placeholder="아이디를 입력하세요">
+					<input type="text" name="id" id="id" placeholder="아이디를 입력하세요">
 				</div>
 				<div class="form-item pwBox">
-					<label for="pw"></label> <input type="password" name="pw" id="pw" placeholder="패스워드를 입력하세요">
+					<input type="password" name="pw" id="pw" placeholder="패스워드를 입력하세요">
 				</div>
 				<div class="form-item saveIDBox">
 					<input type="checkbox" id="saveID"> <label for="saveID">아이디저장</label>
@@ -234,9 +233,8 @@ $(function() {
 		</div>
 		
 		<div class="">
-			<a>아이디찾기 | </a>
-			<a>비밀번호찾기 | </a>
-			<a>회원가입</a>
+			<a href="./finduser">아이디 & 비밀번호 찾기</a> |
+			<a href="./join">회원가입</a>
 		</div>
 	</div>
 	    <!--  

@@ -2,15 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.book.web.booklist.BooklistDAO">
 
-<select id="list" resultType="BooklistDTO">
-  SELECT * 
+<select id="booklist" parameterType="Map" resultType="Map">
+  SELECT bkno, bkname, bkwrite, bkimg, bkprice, bkcate,
+  (
+   SELECT COUNT(*) FROM books
+  <where>
+  <if test="bkcate gt 0">AND bkcate = #{bkcate}</if>
+    <choose>
+       <when test="searchN == 'name'">
+           AND bkname LIKE CONCAT('%', #{searchV}, '%')
+       </when>
+       <when test="searchN == 'write'">
+           AND bkwrite LIKE CONCAT('%', #{searchV}, '%')
+       </when>
+    </choose>
+  </where>
+     
+  ) AS count
   FROM books
+  <where>
+  <if test="bkcate gt 0">AND bkcate = #{bkcate}</if>
+    <choose>
+       <when test="searchN == 'all'">
+           AND bkname LIKE CONCAT('%', #{searchV}, '%') OR bkwrite LIKE CONCAT('%', #{searchV}, '%')
+       </when>
+       <when test="searchN == 'name'">
+           AND bkname LIKE CONCAT('%', #{searchV}, '%')
+       </when>
+       <when test="searchN == 'write'">
+           AND bkwrite LIKE CONCAT('%', #{searchV}, '%')
+       </when>
+    </choose>
+  </where>
+    ORDER BY bkno asc
+  
 </select>
 
-<select id="detail" parameterType="Integer" resultType="Map">
+
+
+<select id="bookdetail" parameterType="Integer" resultType="Map">
+  SELECT *
+  FROM books WHERE bkno=#{bkno }
+</select>
+
+<select id="booktop" resultType="BooklistDTO">
+  SELECT *
+  FROM books 
+  ORDER BY bcnt DESC
+</select>
+
+<!-- SM -->
+
+	<insert id="detail2" parameterType="CartDTO">
+		INSERT INTO cart(bkno,bkimg, bkscontent, price, amount, total) VALUES(#{bkno},#{bkimg}, #{bkscontent}, #{price}, #{amount}, #{price}*#{amount})
+	</insert>
+
+	<select id="cart" resultType="Map">
 		SELECT *
-		FROM books WHERE bkno=#{bkno }
-</select>
+		FROM cart
+		WHERE amount > 0
+		ORDER BY cartno desc
+	</select>
 
+	<update id="delete" parameterType="Map">
+		UPDATE cart SET amount = amount - #{mod} WHERE cartno=#{cartno}
+	</update>
+
+	<update id="cart2" parameterType="CartDTO">
+		UPDATE cart SET amount = amount + #{amount} , total = total + #{price}*#{amount} WHERE bkno=#{bkno}
+	</update>
+	
+	
+	
+	
+	
+	
+	
 
 </mapper>

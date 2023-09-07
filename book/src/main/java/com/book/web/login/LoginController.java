@@ -1,4 +1,4 @@
-package com.book.web.Login;
+package com.book.web.login;
 
 import java.util.Map;
 
@@ -27,10 +27,13 @@ public class LoginController {
 
 	
 	@GetMapping({"/", "/index"})
-	public String getCookie(@CookieValue(name = "setS") String setS,
-							@CookieValue(name = "SuserID") String SuserID, HttpSession session) {
+	public String getCookie(@CookieValue(name = "setS", required = false) String setS,
+							@CookieValue(name = "SuserID", required = false) String SuserID, HttpSession session) {
 		// 자동로그인 진행
-		if(setS.equals("S")) {
+	    if ( setS == null || SuserID == null ) {
+	    	 // setS 쿠키가 없거나 값이 "S"가 아닌 경우 처리
+			return "index";
+	    } else if(setS.equals("S")) { 
 			System.out.println(SuserID);
 			Map<String, Object> autoresult = loginService.autoLogin(SuserID);
 			
@@ -60,7 +63,7 @@ public class LoginController {
 				session.setAttribute("mname", result.get("mname"));
 				//System.out.println(session.getAttribute("mname"));
 					
-				return "redirect:/";
+				return "redirect:/index";
 			}
 		return "login";
 	}
@@ -72,6 +75,7 @@ public class LoginController {
 	  JSONObject json = new JSONObject();
 	  
 	  int result = loginService.autoCheck(sid);
+	  json.put("result", result);
 	  System.out.println(result);
 
 	  return json.toString(); 
@@ -104,6 +108,8 @@ public class LoginController {
 
 			if (result == 1) {
 				// db에 kakao계정정보 있다면 로그인진행
+				session.setAttribute("mid", kUser.get("kid"));
+				kUser.get("kid");
 				return "redirect:/";
 
 			} else {
@@ -127,5 +133,14 @@ public class LoginController {
 
 		return "redirect:/login";
 	}
+	
+	// 아이디/비번찾기
+	@GetMapping("/finduser")
+	public String finduser() {
+		
+		return "finduser";
+	}
+	
+	
 
 }

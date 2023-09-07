@@ -1,4 +1,4 @@
-package com.book.web.Login;
+package com.book.web.login;
 
 import java.util.Map;
 
@@ -16,9 +16,6 @@ public interface LoginDAO {
 	void setKakaoUser(Map<String, Object> kUser);
 
 	Map<String, Object> autoLogin(String suserID);
-
-
-
 
 
 }

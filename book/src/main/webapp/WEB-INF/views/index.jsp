@@ -77,7 +77,7 @@ function kakaoLogout(){
 		
 	 <div>
          <c:choose>
-            <c:when test="${sessionScope.mname ne null}"> " ${sessionScope.mname} " 로그인완</c:when>
+            <c:when test="${sessionScope.mid ne null}"> id : ${sessionScope.mid} _ 로그인완</c:when>
             <c:otherwise>로그아웃상태 </c:otherwise>
          </c:choose>
       </div>

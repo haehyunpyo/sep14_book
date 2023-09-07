@@ -1,0 +1,21 @@
+@charset "UTF-8";
+.zheart{
+  position: absolute;
+  height: 30px; 
+  top: 10px;
+  left : 10px; 
+  opacity: 90%;
+}
+.zzheart{
+  position: absolute;
+  height: 30px; 
+  top: 10px;
+  left : 10px; 
+  opacity: 90%;
+}
+.bpimg{
+	margin-top: 65px;
+	margin-bottom: -17px;
+	margin-left: 158px;
+	
+}
