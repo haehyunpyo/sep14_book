@@ -13,7 +13,6 @@ function kakaoLogout(){
 	location.href="https://kauth.kakao.com/oauth/logout?client_id=3ecca13d973c6d11e752a114a1e14922&logout_redirect_uri=http://localhost/logout/kakao";
 }
 
-
 	$(function(){
 	
 		// 로그아웃_자동로그인 해제
@@ -57,14 +56,12 @@ function kakaoLogout(){
 		
 	});
 
-
 </script>
 </head>
 <body>
+  <%@ include file="menu.jsp"%>
+	<br><br><br><br><br><br><br><br><br>
 	<h1>첫 화면</h1>
-	
-	<a href="./login">로그인으로 이동</a>
-	<br>
 	
 		<div>
 			<button type="submit" onclick="kakaoLogout()">

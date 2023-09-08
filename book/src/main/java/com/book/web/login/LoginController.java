@@ -1,7 +1,12 @@
 package com.book.web.login;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -20,8 +25,14 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
+	
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		// 로그인상태에서 login페이지 이동 막기
+		if(session.getAttribute("mid") != null) {
+			return "redirect:/";
+		}
 		return "login";
 	}
 
@@ -29,15 +40,15 @@ public class LoginController {
 	@GetMapping({"/", "/index"})
 	public String getCookie(@CookieValue(name = "setS", required = false) String setS,
 							@CookieValue(name = "SuserID", required = false) String SuserID, HttpSession session) {
-		// 자동로그인 진행
-	    if ( setS == null || SuserID == null ) {
-	    	 // setS 쿠키가 없거나 값이 "S"가 아닌 경우 처리
+		
+	    if ( setS == null || SuserID == null ) {	// 메인페이지 (setS 쿠키가 없거나 값이 "S"가 아닌 경우)
 			return "index";
-	    } else if(setS.equals("S")) { 
-			System.out.println(SuserID);
-			Map<String, Object> autoresult = loginService.autoLogin(SuserID);
 			
-			if (String.valueOf(autoresult.get("acount")).equals("1")) {
+	    } else if(setS.equals("S")) { 				// 자동로그인 진행 (setS 쿠키의 값이 "S"가 아닌 경우)
+			//System.out.println(SuserID);
+			Map<String, Object> autoresult = loginService.autoLogin(SuserID);	// 쿠키id와 디비id 일치여부확인
+			
+			if (String.valueOf(autoresult.get("autocount")).equals("1")) {
 				
 				session.setAttribute("mid", autoresult.get("mid"));
 				session.setAttribute("mname", autoresult.get("mname"));
@@ -82,7 +93,7 @@ public class LoginController {
 	  }
 	 
 	  
-	@GetMapping("/logout")
+	@GetMapping({"/logout", "/logout/kakao"})
 	public String logout(HttpSession session) {
 
 		session.invalidate();
@@ -127,13 +138,6 @@ public class LoginController {
 		}
 	}
 
-	@GetMapping("/logout/kakao")
-	public String kakaoLogout() {
-		System.out.println("K로그아웃성공");
-
-		return "redirect:/login";
-	}
-	
 	// 아이디/비번찾기
 	@GetMapping("/finduser")
 	public String finduser() {

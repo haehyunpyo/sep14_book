@@ -7,12 +7,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -148,7 +156,6 @@ public class LoginService {
           return kmap;
       }
 
-
 	public Map<String, Object> login(Map<String, Object> map) {
 		return loginDAO.login(map);
 	}
@@ -170,10 +177,5 @@ public class LoginService {
 	}
 
 
-
-
-
-
-
-      
+	
 }

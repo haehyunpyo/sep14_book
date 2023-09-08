@@ -56,14 +56,21 @@
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
 	<link href="../css/login.css" rel="stylesheet">
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="./js//jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 
+// 카카오로그인
 function kakaoLogin(){
 	location.href="https://kauth.kakao.com/oauth/authorize?client_id=3ecca13d973c6d11e752a114a1e14922&redirect_uri=http://localhost/login/kakao&response_type=code"
 	//window.open("https://kauth.kakao.com/oauth/authorize?client_id=3ecca13d973c6d11e752a114a1e14922&redirect_uri=http://localhost/login&response_type=code", "_blank", "width=500, height=500");
 	//opner.document.location.href="http://localhost/"
+}
+
+//네이버로그인
+function naverLogin(){
+	location.href="";
 }
 
 

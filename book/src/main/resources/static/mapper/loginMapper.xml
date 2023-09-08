@@ -26,7 +26,7 @@
 	</update>
 
 	<select id="autoLogin" parameterType="String" resultType="Map">
-		SELECT count(*) as acount, mid, mname
+		SELECT count(*) as autocount, mid, mname
 		FROM members
 		WHERE mid=#{SuserID} AND auto=1
 	</select>
