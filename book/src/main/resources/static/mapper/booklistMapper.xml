@@ -72,8 +72,11 @@
 		UPDATE cart SET amount = amount + #{amount} , total = total + #{price}*#{amount} WHERE bkno=#{bkno}
 	</update>
 	
-	
-	
+<!--	SH -->
+	<update id="rental" parameterType="Map">
+		INSERT INTO rental (rsdate, rddate, bkno, rdel, mid)
+		VALUES (#{rsdate}, #{rddate}, #{bkno}, 1, #{mid})
+	</update>
 	
 	
 	

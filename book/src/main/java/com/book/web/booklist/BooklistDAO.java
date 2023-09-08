@@ -22,4 +22,6 @@ public interface BooklistDAO {
 	int delete(Map<String, Object> map);
 
 	void cart2(CartDTO dto);
+
+	int rental(Map<String, Object> map);
 }

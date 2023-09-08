@@ -1,12 +1,7 @@
 package com.book.web.login;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -27,8 +22,7 @@ public class LoginController {
 
 	
 	@GetMapping("/login")
-	public String login(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String login(HttpSession session) {
 		// 로그인상태에서 login페이지 이동 막기
 		if(session.getAttribute("mid") != null) {
 			return "redirect:/";
@@ -140,8 +134,11 @@ public class LoginController {
 
 	// 아이디/비번찾기
 	@GetMapping("/finduser")
-	public String finduser() {
-		
+	public String finduser(HttpSession session) {
+		// 로그아웃상태에서 finduser페이지 이동 막기
+		if(session.getAttribute("mid") != null) {
+			return "redirect:/";
+		}
 		return "finduser";
 	}
 	

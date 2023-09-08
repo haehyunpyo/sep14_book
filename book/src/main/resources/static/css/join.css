@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+.join-div{
+	box-sizing : border-box;
+	margin: 100px auto;
+	padding: 20px;
+	font-size:15px;
+	background-color:#F2F2F2;
+	width: 500px;
+}
+
+input{
+    background-color:white;
+    border-radius: 5px;
+    height: 50px;
+    width: 400px;
+ 	border:none;
+  	outline:none;
+}
+
+.emailBox{
+	display: flex;
+	text-align: center;
+	width: 400px;
+}
+
+#memail{
+	width: 180px;
+}
+
+.selectMail{
+	background-color:white;
+    border-radius: 5px;
+	width: 200px;
+    height: 50px;
+ 	border:none;
+  	outline:none;
+  	margin-left: 20px;
+  	float: right;
+}
+
+.Jbutton{
+	background-color: black;
+	color: white;
+	border: none;
+    border-radius: 5px;
+    padding: 10px 25px; 
+    font-size: 16px;
+    cursor: pointer;
+}
+.idbutton{
+	background-color: black;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 5px 20px;
+}
+
+.join-div h1 {
+    font-weight: bold; 
+    font-size: 40px; 
+    color: black;
+}

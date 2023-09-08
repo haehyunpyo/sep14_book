@@ -44,5 +44,9 @@ public class BooklistService {
 		booklistDAO.cart2(dto);
 	}
 
+	public int rental(Map<String, Object> map) {
+		return booklistDAO.rental(map);
+	}
+
 	
 }

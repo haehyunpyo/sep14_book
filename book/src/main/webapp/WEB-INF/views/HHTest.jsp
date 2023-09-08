@@ -10,19 +10,63 @@
 
 $(function() {
 	$("#testbtn").click(function(){
-		if($("#saveAll").is(":checked")){	
-			alert("!");
+		let mail = $(this).siblings(".select").children("#naver").val();
+		let Fmail = $(this).siblings("#femail").val();
+		
+		let Dmail = mail.split(".");
+		
+		let Mmail = Dmail[0];
+		let Lmail = Dmail[1];
+		//console.log(Mmail); // naver
+		//console.log(Lmail); // com
+		
+		// 메일주소 앞부분 입력값검사
+		let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+		let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;
+		
+		if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
+			Fmail = Fmail.replace(Fmail, "").replace(replaceKorean, "");
+			alert("올바른 메일주소를 입력해주세요")
+			$("#femail").val("");
+			$("#Opt").prop("selected", true);
 		}
-	}
-}
-	
+		
+	});
+});
+
+/* 
+    // 특수문자 정규식 변수(공백 미포함)
+    var replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;
+ 
+    // 완성형 아닌 한글 정규식
+    var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ 
+ */
 
 </script>
+<style type="text/css">
+
+
+
+</style>
+<!-- onclick="setEmailDomain(this.value);return false; -->
+
 </head>
 <body>
+
+
 	<form action="/HHTest" method="get" id="frm">
-		<input type="checkbox" id="check"> <label for="check">테스트체크박스</label>
-		<button type="submit" id="testbtn">테스트버튼</button>
+		
+		<input type="text" id="femail"/> 
+		
+		<select class="select">
+			<option id="Opt">-선택-</option>
+			<option id="naver" value="naver.com">@naver.com</option>
+			<option id="gmail" value="gmail.com">@gmail.com</option>
+			<option id="hanmail" value="hanmail.net">@hanmail.net</option>
+		</select>
+		<button type="button" id="testbtn">테스트버튼</button>
+		
 	</form>
 </body>
 </html>

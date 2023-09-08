@@ -58,8 +58,8 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <link id="color-scheme" href="assets/css/colors/default.css" rel="stylesheet">
     <link href="../css/bookdetail.css" rel="stylesheet">
+    <script src="./js//jquery-3.7.0.min.js"></script>
     <script type="text/javascript">
-
 
     var zHeart1 = false; // 초기 상태는 heart2.png 입니다.
 
@@ -77,9 +77,43 @@
       zHeart1 = !zHeart1;
     }
     
-    
     </script>
-  </head>
+
+	<script type="text/javascript">
+		// 책대여
+		$(function(){
+
+			$("#rental").click(function(){
+	
+				let ddate = $("#rddate").val();
+				let rdate = $("#rsdate").val();
+				let bkno = ${bookdetail.bkno };
+
+				$.ajax({
+					url : "./rental",
+					type : "POST",
+					data : {"rsdate" : rdate, "rddate" : ddate,	"bkno" : bkno},
+					dataType : "json",
+					success : function(data) {
+						//alert(data.result);
+						if(data.result == 1){
+						   alert("대여가 완료 되었습니다"); 
+						} else {
+						   alert("로그인 후 이용 가능합니다.");
+						}
+						   
+					},
+					error : function(request, status, error) {
+						alert("대여실패 : " + error);
+					}
+
+				});
+
+			});
+		});
+	</script>
+
+</head>
   <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
   <%@ include file="menu.jsp"%>
     <main>
@@ -132,12 +166,12 @@
                 </div>
                  <div class="tab-pane" id="trade">
                   <div class="col-sm-6 mb-sm-20">
-                    대여일<input class="form-control input-lg" type="date" name="" value="1" max="40" min="1" required="required"/>
+                    대여일<input class="form-control input-lg" type="date" id="rsdate" name="rdate" max="40" min="1" required="required"/>
                   </div>
                   <div class="col-sm-6 mb-sm-20">
-                    반납일<input class="form-control input-lg" type="date" name="" value="1" max="40" min="1" required="required"/>
+                    반납일<input class="form-control input-lg" type="date" id="rddate" name="ddtae" max="40" min="1" required="required"/>
                   </div>
-                    <div class="col-sm-12"><br><a class="btn btn-lg btn-block btn-round btn-b" href="#">대여하기</a></div>
+                    <div class="col-sm-12"><br><a class="btn btn-lg btn-block btn-round btn-b" href="#" id="rental">대여하기</a></div>
                   </div>
                 </div>
                 

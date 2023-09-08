@@ -3,6 +3,8 @@ package com.book.web.booklist;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +29,8 @@ public class BooklistController {
 			map.put("bkcate", 0);
 			
 		}
-		System.out.println("카테고리 :" + bkcate );
-		System.out.println("검색 :" + map );
+		//System.out.println("카테고리 :" + bkcate );
+		//System.out.println("검색 :" + map );
 		//책 목록 불러오기
 		List<Map<String, Object>> booklist = booklistService.booklist(map);
 		//List<BooklistDTO> booklist = booklistService.booklist(bkcate);
@@ -105,8 +107,24 @@ public class BooklistController {
 		return "purchase";
 	}
 	
-	
-	
+	// 책대여
+	@ResponseBody
+	@PostMapping("/rental")
+	public String rental(@RequestParam Map<String, Object> map, HttpSession session) {
+		
+		JSONObject json = new JSONObject();
+		//System.out.println(session.getAttribute("mid"));
+		if(session.getAttribute("mid") != null && session.getAttribute("mid") != "") {
+			map.put("mid", session.getAttribute("mid"));
+			//System.out.println(map);
+			int result = booklistService.rental(map);
+			json.put("result", result);
+			
+			return json.toString();
+		}
+		
+		return json.toString();
+	}
 	
 	
 }

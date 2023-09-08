@@ -21,7 +21,7 @@
 			<div>
 				<div>아이디</div>
 				<div>
-					<input type="text" name="mid" id="mid" value="${sessionScope.mid}" />
+					<input type="text" name="mid" id="mid" value="${sessionScope.mid}" disabled/>
 				</div>
 			</div>
 					<div>
@@ -40,7 +40,7 @@
 					<div>
 						<div>이메일</div>
 						<div>
-							<input type="text" name="memail" id="memail" value="${memail }" />
+							<input type="text" name="memail" id="memail" value="${memail }" disabled/>
 						</div>
 					</div>
 					<div>

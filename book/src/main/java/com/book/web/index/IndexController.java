@@ -16,6 +16,9 @@ public class IndexController {
 	public String test() {
 		return "HHTest";
 	}
-	
+	@GetMapping("/HHTest2")
+	public String test2() {
+		return "HHTest2";
+	}
 	
 }
