@@ -103,7 +103,7 @@ public class LoginController {
 		// System.out.println(code);
 		String access_Token = loginService.getKakaoToken(code);
 		// System.out.println(access_Token);
-		Map<String, Object> kUser = loginService.getKakaoUser(access_Token);
+		Map<String, Object> kUser = loginService.getKakaoUser(access_Token);  // kmap값을 kUser로 받음.
 		// System.out.println(kUser); // {kid=3002751483, kemail=gogus228@hanmail.net}
 
 		// kakao 로그인기록 확인
@@ -131,6 +131,24 @@ public class LoginController {
 			return "redirect:login";
 		}
 	}
+	
+	
+	// 네이버 로그인
+	@GetMapping("/login/naver")
+	public String naverLogin(@RequestParam(required = false) String code, HttpSession session, Model model) {
+		System.out.println("네이버 가보자고 : " + code);		// code형식 : t9ke0IO0SFl5aNin6F
+		String Naccess_Token = loginService.getNaverToken(code);
+		
+		//System.out.println("Naccess_Token : " + Naccess_Token);
+		// Nresponse body : {"access_token":"AAAAOas6tf3pSri5ll2PWpedUIEi-V0wBZ3_RXDaV07N2DvstopFdFlAMOTKCYP2WJZKBMq_nBqDEYyplhuCfQl_a5o","refresh_token":"dpqPmnlTMO684PXmisGfviiVb67IdKboz4qPvKkFLVOWlOuLFisk05EnNTKCmdkh4HVYjzrYeO5I8Q0Mufq1P6JjPCWGaDmii4JzC2o5J9RXnZHrXqc3xENgTTiihbbFzQipf3","token_type":"bearer","expires_in":"3600"}
+		Map<String, Object> NUser = loginService.getNaverUser(Naccess_Token);
+		System.out.println(NUser);
+		
+		return "redirect:/index";
+	}
+
+	
+	
 
 	// 아이디/비번찾기
 	@GetMapping("/finduser")

@@ -70,7 +70,7 @@ function kakaoLogin(){
 
 //네이버로그인
 function naverLogin(){
-	location.href="";
+	location.href="https://nid.naver.com/oauth2.0/authorize?client_id=hnntl6BcuuFp5qf4vMAt&redirect_uri=http://localhost/login/naver&response_type=code";
 }
 
 
@@ -235,7 +235,11 @@ $(function() {
 					<div><img src="img/login/login_kakaoBtn.png" alt="kakaoBtn" id="kakao"></div>
 				</button>
 			</div>
-			<div class="login-with-item naver">네이버로그인</div>
+			<div class="login-with-item naver">
+				<button type="submit" onclick="naverLogin()">
+					<div>네이버로그인</div>
+				</button>
+			</div>
 			<div class="login-with-item google">구글로그인</div>
 		</div>
 		

@@ -12,6 +12,10 @@
 function kakaoLogout(){
 	location.href="https://kauth.kakao.com/oauth/logout?client_id=3ecca13d973c6d11e752a114a1e14922&logout_redirect_uri=http://localhost/logout/kakao";
 }
+function naverLogout(){
+	window.open("https://nid.naver.com/nidlogin.logout", "_blank", "width=500, height=500");
+	opner.document.location.href="http://localhost/"
+}
 
 	$(function(){
 	
@@ -67,12 +71,16 @@ function kakaoLogout(){
 			<button type="submit" onclick="kakaoLogout()">
 				카카오계정 로그아웃
 			</button>
+			<button type="submit" onclick="naverLogout()">
+				네이버계정 로그아웃
+			</button>
 			<button type="button" id="logoutbtn">
 				로그아웃
 			</button>
 		</div>
 		
-	 <div>
+		
+		<div>
          <c:choose>
             <c:when test="${sessionScope.mid ne null}"> id : ${sessionScope.mid} _ 로그인완</c:when>
             <c:otherwise>로그아웃상태 </c:otherwise>
