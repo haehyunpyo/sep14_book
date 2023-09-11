@@ -83,7 +83,8 @@ $(function() {
 	
 	
 	if (setS == "S"){
-		alert("자동로그인에 체크함")
+		alert("자동로그인에 체크함");
+		window.location.href = "/login";
 	}
 	else if(setY == "Y"){
 		$("#saveID").prop("checked", true);
@@ -131,7 +132,6 @@ $(function() {
 				data : {sid : sid, setS : setS},
 					dataType : "json",
 					success : function(data) {
-						alert("자동로그인에 체크함")
 						saveIDT = false;
 					},
 					error : function(error) {
@@ -149,8 +149,8 @@ $(function() {
 		} else if (!saveIDT) {	// false
 			
 			alert("진행x"); 
-			//delCookie("userID");
-			//delCookie("setY");
+			delCookie("userID");
+			delCookie("setY");
 		}
 
 		//login-form 최종제출
@@ -207,8 +207,8 @@ $(function() {
 <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
   <%@ include file="menu.jsp"%>
   
-	<div class="Lcontainer">
-		<div class="login-form">
+	<div class="Lcontainer" align="center">
+		<div class="login-form" align="center">
 			<form action="/login" method="post" id="frm">
 				<div class="form-item idBox">
 					<input type="text" name="id" id="id" placeholder="아이디를 입력하세요">
@@ -216,11 +216,13 @@ $(function() {
 				<div class="form-item pwBox">
 					<input type="password" name="pw" id="pw" placeholder="패스워드를 입력하세요">
 				</div>
-				<div class="form-item saveIDBox">
-					<input type="checkbox" id="saveID"> <label for="saveID">아이디저장</label>
-				</div>
-				<div class="form-item saveAllBox">
-					<input type="checkbox" id="saveAll"> <label for="saveID">자동로그인</label>
+				<div class="saveBox">
+					<div class="form-item saveIDBox">
+						<input type="checkbox" id="saveID"> <label for="saveID">아이디저장</label>
+					</div>
+					<div class="form-item saveAllBox">
+						<input type="checkbox" id="saveAll"> <label for="saveAll">자동로그인</label>
+					</div>
 				</div>
 
 				<div class="form-item loginBtnBox">
@@ -229,23 +231,18 @@ $(function() {
 			</form>
 		</div>
 
-		<div class="login-with">
-			<div class="login-with-item kakao">
-				<button type="submit" onclick="kakaoLogin()">
-					<div><img src="img/login/login_kakaoBtn.png" alt="kakaoBtn" id="kakao"></div>
-				</button>
+		<div class="login-with" align="center">
+			<div id="kbtnBox">
+				<img src="img/login/login_kakaoBtn.png" alt="kakaoBtn" id="kakao" onclick="kakaoLogin()">
 			</div>
-			<div class="login-with-item naver">
-				<button type="submit" onclick="naverLogin()">
-					<div>네이버로그인</div>
-				</button>
+			<div id="nbtnBox">
+				<img src="img/login/login_naverBtn.png" alt="naverBtn" id="naver" onclick="naverLogin()">
 			</div>
-			<div class="login-with-item google">구글로그인</div>
 		</div>
 		
-		<div class="">
-			<a href="./finduser">아이디 & 비밀번호 찾기</a> |
-			<a href="./join">회원가입</a>
+		<div class="forUserBox" align="center">
+			<a href="./finduser">아이디 & 비밀번호 찾기 </a> |
+			<a href="./join"> 회원가입</a>
 		</div>
 	</div>
 	    <!--  

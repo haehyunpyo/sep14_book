@@ -96,7 +96,7 @@
 			<div class="tab-pane active" id="findID">
 				<div class="col-sm-6 mb-sm-20" id="fidBox">
 					<input class="form-control input-lg" type="text" name="mname" id="fname" max="40" min="1" required="required" placeholder="이름을 입력해 주세요" /> 
-					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="이메일을 입력해 주세요" pattern=".+@gmail\.com"/>
+					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="이메일을 입력해 주세요" />
 					<div class="col-sm-10" id="fidbtnBox">
 						<a class="btn btn-lg btn-block btn-round btn-b" id="fidbtn" href="#">아이디찾기</a>
 					</div>
@@ -104,7 +104,7 @@
 			</div>
 			<div class="tab-pane" id="findPW">
 				<div class="col-sm-6 mb-sm-20">
-					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="아이디를 입력해 주세요" pattern=".+@gmail\.com"/>
+					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="아이디를 입력해 주세요"/>
 					<div class="col-sm-10" id="fpwbtnBox">
 						<a class="btn btn-lg btn-block btn-round btn-b" id="fpwbtn" href="#">비밀번호찾기</a>
 					</div>

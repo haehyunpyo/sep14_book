@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 @Service
 public class LoginService {
@@ -200,9 +202,9 @@ public class LoginService {
 	          Naccess_Token  = element.getAsJsonObject().get("access_token").getAsString();
 	          Nrefresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-	          System.out.println("Naccess_token : " + Naccess_Token);	// AAAAOas6tf3pSri5ll2PWpedUIEi-V0wBZ3_RXDaV07N2DvstopFdFlAMOTKCYP2WJZKBMq_nBqDEYyplhuCfQl_a5o
-	          System.out.println("Nrefresh_token : " + Nrefresh_Token);	// dpqPmnlTMO684PXmisGfviiVb67IdKboz4qPvKkFLVOWlOuLFisk05EnNTKCmdkh4HVYjzrYeO5I8Q0Mufq1P6JjPCWGaDmii4JzC2o5J9RXnZHrXqc3xENgTTiihbbFzQipf3
-
+	         //System.out.println("Naccess_token : " + Naccess_Token);	
+	         //System.out.println("Nrefresh_token : " + Nrefresh_Token);
+	          
 	          Nbr.close();
 	          bw.close();
 	          
@@ -246,34 +248,33 @@ public class LoginService {
 	            while ((line = br.readLine()) != null) {
 	                result += line;
 	            }
-	            System.out.println("response body : " + result);
+	            //System.out.println("response body : " + result);
 	            //response body : {"resultcode":"00","message":"success",
-	            // "response":{"id":"MYTpCxw_Dk2TQEhnP_bIHQfync4EgPoU_ThlOL-INR8","nickname":"phyho","email":"phyho0228@naver.com","mobile":"010-6534-2377","mobile_e164":"+821065342377","name":"\ud45c\ud574\ud604"}}
 
-
+	            // 네이버 유저정보 받아오기
 	            Gson gson = new Gson();
 	            JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
-	            JsonElement responseElement = jsonObject.get("response");
+	            JsonElement element = jsonObject.get("response");
 	            
-	            java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Map<String, Object>>(){}.getType();
-	            Nmap = gson.fromJson(responseElement, type);
+	            // 받아올값 : id, nickname, email, mobile
+	            id = element.getAsJsonObject().get("id").getAsString().substring(0, 5);
+	            email = element.getAsJsonObject().get("email").getAsString();
+	            nickname = element.getAsJsonObject().get("nickname").getAsString();
+	            mobile = element.getAsJsonObject().get("mobile").getAsString();
 	            
-	            // 받아올값 : id, nickname, email, mobile, name
-	            id = (String) Nmap.get("id");
-	            email = (String) Nmap.get("email");
-	            nickname = (String) Nmap.get("nickname");
-	            mobile = (String) Nmap.get("mobile");
-	            //boolean hasEmail = element.getAsJsonObject().get("email").getAsJsonObject().get("has_email").getAsBoolean();
-	            //boolean hasName = element.getAsJsonObject().get("nickname").getAsJsonObject().get("has_Name").getAsBoolean();
+	            //System.out.println("id : " + id);
+	            //System.out.println("email : " + email);
+	            //System.out.println("nickname : " + nickname);
+	            //System.out.println("mobile : " + mobile);
 	            
-	            
-	            System.out.println("id : " + id);
-	            System.out.println("email : " + email);
-	            System.out.println("nickname : " + nickname);
-	            System.out.println("mobile : " + mobile);
-	            
-	 //         Nmap.put("Nid", id);
-	 //         Nmap.put("Nemail", email);
+	            // Map에 담기
+	            Type type = new TypeToken<Map<String, Object>>() {}.getType();
+	            Nmap = gson.fromJson(element, type);
+
+	            Nmap.put("Nid", id);
+	          	Nmap.put("Nemail", email);
+	          	Nmap.put("Nname", nickname);
+	          	Nmap.put("Nphone", mobile);
 	            
 	            br.close();
 
@@ -305,6 +306,13 @@ public class LoginService {
 		return loginDAO.autoLogin(suserID);
 	}
 
+	public int hasNaverUser(Map<String, Object> nUser) {
+		return loginDAO.hasNaverUser(nUser);
+	}
+
+	public void setNaverUser(Map<String, Object> nUser) {
+		loginDAO.setNaverUser(nUser);
+	}
 
 	
 	

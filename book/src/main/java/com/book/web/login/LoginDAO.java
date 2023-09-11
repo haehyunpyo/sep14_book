@@ -17,5 +17,8 @@ public interface LoginDAO {
 
 	Map<String, Object> autoLogin(String suserID);
 
+	int hasNaverUser(Map<String, Object> nUser);
+
+	void setNaverUser(Map<String, Object> nUser);
 
 }

@@ -30,5 +30,17 @@
 		FROM members
 		WHERE mid=#{SuserID} AND auto=1
 	</select>
+	
+	<select id="hasNaverUser" parameterType="Map" resultType="Integer">
+		SELECT count(*)  
+		FROM members
+		WHERE memail=#{Nemail} AND mconnect=2
+	</select>
+
+	<insert id="setNaverUser" parameterType="Map">
+	 	INSERT INTO members (mid, mpw, memail, mname, mphone, mconnect)
+     	VALUES(#{Nid}, 1234, #{Nemail}, #{Nname}, #{Nphone}, 2)
+	</insert>
+	
 
 </mapper>

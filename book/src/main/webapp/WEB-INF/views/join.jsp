@@ -123,14 +123,8 @@
   		console.log(memail);	// gogus228@gmail.com
   		
   		
-  		
-  		
-  		
-  		
   	});
       
-  	
-  	
       
    });
    

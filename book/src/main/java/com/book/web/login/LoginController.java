@@ -46,10 +46,9 @@ public class LoginController {
 				
 				session.setAttribute("mid", autoresult.get("mid"));
 				session.setAttribute("mname", autoresult.get("mname"));
-				//System.out.println(session.getAttribute("mname"));
 				System.out.println("됨??");
 				
-				return "index";
+				return "redirect:/index";
 			}
 		}
 		return "index";
@@ -57,18 +56,26 @@ public class LoginController {
 		
 	
 	@PostMapping("/login")
-	public String login(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String login(@CookieValue(name = "setS", required = false) String setS,
+			@CookieValue(name = "SuserID", required = false) String SuserID,
+			@RequestParam Map<String, Object> map, HttpSession session) {
 
-			// 일반로그인 진행
-			Map<String, Object> result = loginService.login(map);
-			// System.out.println(result);
-			if (String.valueOf(result.get("count")).equals("1")) {
+		 if ( setS == null || SuserID == null ) {
+			 
+				// 일반로그인 진행
+				Map<String, Object> result = loginService.login(map);
+				// System.out.println(result);
+				if (String.valueOf(result.get("count")).equals("1")) {
 					
-				session.setAttribute("mid", result.get("mid"));
-				session.setAttribute("mname", result.get("mname"));
-				//System.out.println(session.getAttribute("mname"));
+					session.setAttribute("mid", result.get("mid"));
+					session.setAttribute("mname", result.get("mname"));
+					//System.out.println(session.getAttribute("mname"));
 					
-				return "redirect:/index";
+					return "redirect:/index";
+				}
+				
+		 } else if ( setS.equals("S") ) {
+				return "redirect:/booklist";
 			}
 		return "login";
 	}
@@ -87,65 +94,92 @@ public class LoginController {
 	  }
 	 
 	  
-	@GetMapping({"/logout", "/logout/kakao"})
-	public String logout(HttpSession session) {
+	  @GetMapping("/logout")
+		public String logout(HttpSession session) {
+		  
+			if(session.getAttribute("mid") != null) {
+				session.invalidate();
+				System.out.println("로그아웃!!!");
+				return "redirect:/login";
+			}
+			return "redirect:/index";
+		}
 
-		session.invalidate();
-		System.out.println("로그아웃!!!");
+		@GetMapping("/login/kakao")
+		public String kakaoLogin(@RequestParam(required = false) String code, HttpSession session, Model model) {
 
-		return "redirect:/login";
-	}
+			// URL에 포함된 code를 이용하여 액세스 토큰 발급
+			// System.out.println(code);
+			String access_Token = loginService.getKakaoToken(code);
+			// System.out.println(access_Token);
+			Map<String, Object> kUser = loginService.getKakaoUser(access_Token);  // kmap값을 kUser로 받음.
+			// System.out.println(kUser); // {kid=3002751483, kemail=gogus228@hanmail.net}
 
-	@GetMapping("/login/kakao")
-	public String kakaoLogin(@RequestParam(required = false) String code, HttpSession session, Model model) {
+			// kakao 로그인기록 확인
+			int result = loginService.hasKakaoUser(kUser);
 
-		// URL에 포함된 code를 이용하여 액세스 토큰 발급
-		// System.out.println(code);
-		String access_Token = loginService.getKakaoToken(code);
-		// System.out.println(access_Token);
-		Map<String, Object> kUser = loginService.getKakaoUser(access_Token);  // kmap값을 kUser로 받음.
-		// System.out.println(kUser); // {kid=3002751483, kemail=gogus228@hanmail.net}
+			if (kUser != null) { // kakao연결성공
 
-		// kakao 로그인기록 확인
-		int result = loginService.hasKakaoUser(kUser);
+				if (result == 1) {
+					// db에 kakao계정정보 있다면 로그인진행
+					session.setAttribute("mid", kUser.get("kid"));
+					session.setAttribute("withK", 1);	// 로그아웃시 활용
+					return "redirect:/";
 
-		if (kUser != null) { // kakao연결성공
+				} else {
+					loginService.setKakaoUser(kUser); // db에 kakao계정정보 없다면 생성(id&email)
 
-			if (result == 1) {
-				// db에 kakao계정정보 있다면 로그인진행
-				session.setAttribute("mid", kUser.get("kid"));
-				kUser.get("kid");
-				return "redirect:/";
+					session.setAttribute("mid", kUser.get("kid")); // kid 세션에 저장
+					session.setAttribute("withK", 1);	// 로그아웃시 활용
+					model.addAttribute("memail", kUser.get("kemail"));
+
+					// 위의 mid, memail은 subjoin에 자동기입
+					return "subjoin";
+				}
 
 			} else {
-				loginService.setKakaoUser(kUser); // db에 kakao계정정보 없다면 생성(id&email)
-
-				session.setAttribute("mid", kUser.get("kid")); // kid 세션에 저장
-				model.addAttribute("memail", kUser.get("kemail"));
-
-				// 위의 mid, memail은 subjoin에 자동기입
-				return "/subjoin";
+				return "redirect:login";
 			}
-
-		} else {
-			return "redirect:login";
 		}
-	}
 	
 	
-	// 네이버 로그인
-	@GetMapping("/login/naver")
-	public String naverLogin(@RequestParam(required = false) String code, HttpSession session, Model model) {
-		System.out.println("네이버 가보자고 : " + code);		// code형식 : t9ke0IO0SFl5aNin6F
-		String Naccess_Token = loginService.getNaverToken(code);
-		
-		//System.out.println("Naccess_Token : " + Naccess_Token);
-		// Nresponse body : {"access_token":"AAAAOas6tf3pSri5ll2PWpedUIEi-V0wBZ3_RXDaV07N2DvstopFdFlAMOTKCYP2WJZKBMq_nBqDEYyplhuCfQl_a5o","refresh_token":"dpqPmnlTMO684PXmisGfviiVb67IdKboz4qPvKkFLVOWlOuLFisk05EnNTKCmdkh4HVYjzrYeO5I8Q0Mufq1P6JjPCWGaDmii4JzC2o5J9RXnZHrXqc3xENgTTiihbbFzQipf3","token_type":"bearer","expires_in":"3600"}
-		Map<String, Object> NUser = loginService.getNaverUser(Naccess_Token);
-		System.out.println(NUser);
-		
-		return "redirect:/index";
-	}
+		// 네이버 로그인
+		@GetMapping("/login/naver")
+		public String naverLogin(@RequestParam(required = false) String code, HttpSession session, Model model) {
+			//System.out.println("네이버 가보자고 : " + code);		// code형식 : t9ke0IO0SFl5aNin6F
+			String Naccess_Token = loginService.getNaverToken(code);
+			
+			//System.out.println("Naccess_Token : " + Naccess_Token);
+			// Nresponse body : {"access_token":"AAAAOas6tf3pSri5ll2PWpedUIEi-V0wBZ3_RXDaV07N2DvstopFdFlAMOTKCYP2WJZKBMq_nBqDEYyplhuCfQl_a5o","refresh_token":"dpqPmnlTMO684PXmisGfviiVb67IdKboz4qPvKkFLVOWlOuLFisk05EnNTKCmdkh4HVYjzrYeO5I8Q0Mufq1P6JjPCWGaDmii4JzC2o5J9RXnZHrXqc3xENgTTiihbbFzQipf3","token_type":"bearer","expires_in":"3600"}
+			Map<String, Object> nUser = loginService.getNaverUser(Naccess_Token);
+			//System.out.println(NUser);
+			// 네이버 로그인기록 확인
+			int result = loginService.hasNaverUser(nUser);
+			System.out.println(result);	// 0 또는 1
+			
+			if(nUser != null) {	// 네이버 연결성공
+				// db에 naver 계정정보 있다면 로그인진행
+				if(result == 1) {
+					session.setAttribute("mid", nUser.get("Nid"));
+					session.setAttribute("withN", 2);	// 로그아웃시 활용
+					return "redirect:/";
+					
+				} else {	// db에 naver계정정보 없다면 생성(id&email&name&phone)
+					loginService.setNaverUser(nUser);
+					session.setAttribute("mid", nUser.get("Nid")); // Nid 세션에 저장
+					session.setAttribute("withN", 2);	// 로그아웃시 활용
+					// db에 넣을 추가정보들
+					model.addAttribute("memail", nUser.get("Nemail"));
+					model.addAttribute("mname", nUser.get("Nname"));
+					model.addAttribute("mphone", nUser.get("Nphone"));
+					return "subjoin";
+				}
+				
+			}else {
+				return "redirect:login";
+			}
+		}
+
 
 	
 	

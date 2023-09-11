@@ -13,8 +13,10 @@ function kakaoLogout(){
 	location.href="https://kauth.kakao.com/oauth/logout?client_id=3ecca13d973c6d11e752a114a1e14922&logout_redirect_uri=http://localhost/logout/kakao";
 }
 function naverLogout(){
-	window.open("https://nid.naver.com/nidlogin.logout", "_blank", "width=500, height=500");
-	opner.document.location.href="http://localhost/"
+	let Npopup = window.open("https://nid.naver.com/nidlogin.logout", "_blank", "width=500, height=500");
+	setTimeout(function() {
+		Npopup.close();
+	}, 1000);
 }
 
 	$(function(){
@@ -22,11 +24,12 @@ function naverLogout(){
 		// 로그아웃_자동로그인 해제
 		let sid = getCookie("SuserID");
 		let setS = getCookie("setS");
+		let setY = getCookie("setY");
 		
 		$("#logoutbtn").click(function(){
-			delCookie("SuserID");
-			delCookie("setS");
-			Logout();
+				//delCookie("SuserID");
+				//delCookie("setS");
+				Logout();
 		});
 		
 		// 쿠키 삭제
@@ -52,8 +55,16 @@ function naverLogout(){
 			}
 		}
 		
+		// 로그아웃
 		function Logout(){
-			window.location.href = "/logout";
+			
+			if(${sessionScope.withN eq 2}){	// 네이버로그아웃 이후 로그아웃실행 
+				alert("네이버로그아웃하자");
+				naverLogout();
+			} else if(${sessionScope.withK eq 1}){ // 카카오로그아웃 이후 로그아웃실행 
+				kakaoLogout();
+			} 
+			window.location.href = "/logout";	// 일반로그아웃
 		}
 		
 		
@@ -68,12 +79,6 @@ function naverLogout(){
 	<h1>첫 화면</h1>
 	
 		<div>
-			<button type="submit" onclick="kakaoLogout()">
-				카카오계정 로그아웃
-			</button>
-			<button type="submit" onclick="naverLogout()">
-				네이버계정 로그아웃
-			</button>
 			<button type="button" id="logoutbtn">
 				로그아웃
 			</button>

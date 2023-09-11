@@ -78,8 +78,5 @@
 		VALUES (#{rsdate}, #{rddate}, #{bkno}, 1, #{mid})
 	</update>
 	
-	
-	
-	
 
 </mapper>
