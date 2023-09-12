@@ -10,7 +10,7 @@ body{
 }
 
 #fContainer{
-	margin-left: 300px; 
+	margin-left: 500px; 
 }
 
 #tabBox{
@@ -23,25 +23,58 @@ body{
 	display:block;
 }
 
-#IDli{
-	text-align: center;
-}
-
-#findID, #findPW, #fname, #femail{
+#findID, #findPW, #fname, #fid{
 	margin: 20px;
 	box-sizing: border-box;
+	width: 320px;
+	height:45px; 
 }
 
-#fidbtnBox, #fpwbtnBox{
-	margin-left: 20px;
+.emailBox{
+	display: flex;
 }
 
-#fidBox{
- 	overflow : hidden; 
- 		text-align: center;
+#femail, #femail2{
+	width: 150px;
+	box-sizing: border-box;
+	float: left;
+	margin: 5px 5px 20px 20px;
+	height:45px; 
 }
+
+#selectBox, #selectBox2 {
+	width: 160px;
+	box-sizing: border-box;
+	float: right;
+	margin: 5px 20px 20px 5px;
+	height:45px; 
+}
+
+#fidBox, #fpwBox{
+ 	text-align: center;
+}
+
 #yourId{
 	text-align: center;
 	font-size: x-large;
 	font-weight: bolder;
+}
+
+#fidbtnBox, #fpwbtnBox{
+	text-align: center;
+	box-sizing: border-box;
+	width: 250px;
+	margin-left: 55px;
+}
+
+#fidbtn, #fpwbtn{
+	background-color: black;
+	color: white;
+	border: none;
+    border-radius: 5px;
+    padding: 10px 20px; 
+    font-size: 13px;
+    cursor: pointer;
+	width: 80%;
+	text-align: center;
 }

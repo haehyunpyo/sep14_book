@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,42 +14,48 @@ $(function() {
 	
 	$("select[name=selectBox]").change(function(){
 		option = $(this).val();	 // @hammail.net
-		//console.log(option);
+		console.log(option);
 	});
+	
 	
 	// 가입 클릭시
 	$("#joinjoin").click(function(){
-		
+	
+	if(option != null && option != ""){
 		// gogus228
 		let Fmail = $(this).parent('div').siblings(".emailBox").children("#memail").val();
 		//alert(Fmail);   
 		
-		// hammail   net
-		let items = option.slice(1).split(".");	
-		let first = items[0];	// hammail
-		let second = items[1];	// net
+		if(Fmail != null && Fmail != ""){
+
+			// hammail   net
+			let items = option.slice(1).split(".");	
+			let first = items[0];	// hammail
+			let second = items[1];	// net
+			
+			// 메일주소 앞부분 입력값검사
+			let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+			let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
 		
-		// 메일주소 앞부분 입력값검사
-		let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
-		let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
-		
-		
-/* 		if(Fmail.includes("@")){
-			Fmail.  Fmail.indexOf("@")	
-		}  */
-		
-		else if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
-			Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
-			//alert(Fmail);
-			alert("올바른 메일주소를 입력해주세요")
-			$("#memail").val("");
-			$("#Opt").prop("selected", true);
+			if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
+				Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
+				//alert(Fmail);
+				alert("올바른 메일주소를 입력해주세요")
+				$("#memail").val("");
+				$("#Opt").prop("selected", true);
+			}
+			
+			let Final = Fmail + "@" + first + "." + second;
+			console.log(Final);	// gogus228@gmail.com
+			let memail = $("#memailF").val(Final);
+			console.log("memail: " + memail.val());
+		} else{
+			alert("입력");
 		}
-		
-		let Final = Fmail + "@" + first + "." + second;
-		console.log(Final);	// gogus228@gmail.com
-		let memail = $("#memailF").val(Final);
-		console.log("memail: " + memail.val());
+	} else{
+		alert("입력");
+	}
+
 		
 	});
 });

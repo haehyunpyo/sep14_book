@@ -6,16 +6,19 @@ body{
 }
 
 .Lcontainer{
+    width: 700px;
 	height: 500px;
-	padding: 30px;
-	margin-top: 250px;
-	justify-content: center;
-	flex-direction: column;
-	vertical-align:middle;
-	border: yellow 1px solid;
 	position: relative;
+    margin: auto; /*중앙 정렬*/
+	margin-top: 250px;
+	vertical-align:middle;
+    border-radius: 5px;
+    border: 1px solid #C6C6C6;
 } 
-
+.login-form{
+	vertical-align:middle;
+	flex-direction: column;
+}
 .form-item{
 	text-align: center;
 }

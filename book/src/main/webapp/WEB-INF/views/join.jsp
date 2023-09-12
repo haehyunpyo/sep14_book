@@ -62,7 +62,7 @@
          let pw2 = $("#pw2").val();
          let mname = $("#mname").val();
          let mphone = $("#mphone").val();
-         //let memail = $("#memail").val();
+         let mbrith = $("#mbrith").val();
          
           if (!isIdChecked) {
              Swal.fire("아이디 중복 검사를 실행하세요.");
@@ -80,53 +80,59 @@
             Swal.fire("핸드폰 번호 11자리를 정확히 입력해주세요.");
             return false;
          }
- /*        if (memail.indexOf('@') === -1 ) {
-            Swal.fire("이메일을 정확히 입력해주세요.");
-            return false; */
-         } 
-      });
-      
-      
-    // 메일주소검사
-  	let option = "";
-  	
-  	$("select[name=selectBox]").change(function(){  // 선택한 메일주소값 뽑아내기
-  		option = $(this).val();	 // @hammail.net
-  		//console.log(option);
+       if (mbrith.length < 10 ) {
+            Swal.fire("생년월일을 정확히 입력해주세요.");
+            return false; 
+         }
+       
+       
+       // 메일주소검사
+     	let option = $("#selectBox option:selected").val();      // 선택한 메일주소값 뽑아내기
+     	
+     	if(option == "-선택-"){
+     		
+	     // gogus228
+			let Fmail = $(this).parent('div').siblings(".emailBox").children("#memail").val();
+			//alert(Fmail);   
+			
+			if(Fmail != null && Fmail != ""){
+				// hanmail   net
+				let items = option.slice(1).split(".");	
+				let first = items[0];	// hanmail
+				let second = items[1];	// net
+				
+				// 메일주소 앞부분 입력값검사
+				let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+				let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+			
+				if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
+					Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
+					Swal.fire("올바른 메일주소를 입력해주세요(정규식검사)")
+					$("#memail").val("");
+					$("#Opt").prop("selected", true);
+					return false; 
+				}
+				
+				let Final = Fmail + "@" + first + "." + second;
+				console.log(Final);	// gogus228@gmail.com
+				let memail = $("#memailF").val(Final);
+				alert("memail: " + memail.val());
+				
+			} else {
+				Swal.fire("올바른 메일주소를 입력해주세요(앞메일주소)");
+				return false; 
+			} 
+		
+     	} else {
+			Swal.fire("올바른 메일주소를 입력해주세요(뒷메일주소)");
+			return false; 
+     }	
+	
   	});
-  	
-  	// 가입 클릭시
-  	$("#joinjoin").click(function(){
-  		
-  		// gogus228
-  		let Fmail = $(this).parent('div').siblings(".emailBox").children("#memail").val();
-  		//alert(Fmail);   
-  		
-  		// hammail   net
-  		let items = option.slice(1).split(".");	
-  		let first = items[0];	// hammail
-  		let second = items[1];	// net
-  		
-  		// 메일주소 앞부분 입력값검사
-  		let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
-  		let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
-  		
-  		if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
-  			Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
-  			//alert(Fmail);
-  			alert("올바른 메일주소를 입력해주세요")
-  			$("#memail").val("");
-  			$("#Opt").prop("selected", true);
-  		}
-  		
-  		let memail = Fmail + "@" + first + "." + second;
-  		console.log(memail);	// gogus228@gmail.com
-  		
-  		
-  	});
+       
+ });
       
       
-   });
    
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -198,7 +204,7 @@ window.onload = function(){
                </div>
                <div>
                   <div class="brithBox">
-                     <input class="input"  type="date" name="mbrith"/><br><br>
+                     <input class="input"  type="date" name="mbrith" id="mbrith"/><br><br>
                   </div>
                </div>
                <div>
@@ -207,13 +213,14 @@ window.onload = function(){
                   </div>
                </div>
                <div class="emailBox">
-					<input class="input" type="text" name="memail" id="memail"	placeholder="이메일을 입력해 주세요" /><br> <br> 
-					<select class="selectMail" id="selectBox">
+					<input class="input" type="text" id="memail" placeholder="이메일을 입력해 주세요" /><br> <br> 
+					<select class="selectMail" id="selectBox" name="selectBox">
 						<option id="Opt">-선택-</option>
-						<option id="naver" value="naver.com">@naver.com</option>
-						<option id="gmail" value="gmail.com">@gmail.com</option>
-						<option id="hanmail" value="hanmail.net">@hanmail.net</option>
+						<option id="naver" value="@naver.com">@naver.com</option>
+						<option id="gmail" value="@gmail.com">@gmail.com</option>
+						<option id="hanmail" value="@hanmail.net">@hanmail.net</option>
 					</select>
+					<input type="hidden" name="memail" id="memailF"/>
 				</div>
                	<div>
 	               <br>

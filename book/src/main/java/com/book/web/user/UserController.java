@@ -24,7 +24,7 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/findId")
 	public String finduser(UserDTO dto) throws JsonProcessingException {
-		//System.out.println(dto);
+		System.out.println(dto);
 		UserDTO result = userService.findId(dto);
 		
 		ObjectMapper jmap = new ObjectMapper();

@@ -13,6 +13,8 @@
 		
 		// 아이디찾기
 		$("#fidbtn").click(function(){
+			
+			let check = true;
 			let mname = $("#fname").val();
 			let memail = $("#femail").val();
 
@@ -20,13 +22,13 @@
 				Swal.fire("이름을 입력하세요");
 				$("#fname").focus();
 			} 
-			else if(memail == null || memail == ""){
-				Swal.fire("이메일을 입력하세요");
-				$("#femail").focus();
-			} else{
-				alert(mname);
-			}
+			else {
+				memail = checkmail(check);
+				let memailToS = memail.toString();
+				alert(memailToS);
 			
+				
+				
 			$.ajax({
 				url : "./findId",
 				type : "post",
@@ -40,6 +42,9 @@
 			            $(".tab-content").hide(); // 모든 .tab-content 요소 숨기기
 			            $("body").append(yourIdDiv); // 페이지에 추가
 			            yourIdDiv.show(); // 생성한 요소 표시
+			            
+					} else {
+						Swal.fire("입력한 정보를 다시 확인해주세요")
 					}
 					
 				},
@@ -48,36 +53,66 @@
 				}
 				
 			});
-		});
 		
-		// 이메일 입력값 검사
-		$("#testbtn").click(function(){
-			let mail = $(this).siblings(".select").children("#naver").val();
-			let Fmail = $(this).siblings("#femail").val();
-			
-			let Dmail = mail.split(".");
-			
-			let Mmail = Dmail[0];
-			let Lmail = Dmail[1];
-			//console.log(Mmail); // naver
-			//console.log(Lmail); // com
-			
-			// 메일주소 앞부분 입력값검사
-			let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
-			let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;
-			
-			if
-			if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
-				Fmail = Fmail.replace(Fmail, "").replace(replaceKorean, "");
 			}
-			Swal.fire("올바른 메일주소를 입력해주세요")
-			
 		});
 		
+
 		
+		$("#fpwbtn").click(function(){
+			checkmail();
+		});
 		
 	});
 
+	// 이메일 입력값 검사
+	function checkmail(check){
+		
+		// 메일주소검사
+     	let option = $("#selectBox option:selected").val();      // 선택한 메일주소값 뽑아내기
+     	let memail="";
+     	
+     	if(option != "-선택-"){
+     		
+	     // gogus228
+			let Fmail = $("#femail").val();
+			//alert(Fmail);   
+			
+			if(Fmail != null && Fmail != ""){
+				// hanmail   net
+				let items = option.slice(1).split(".");	
+				let first = items[0];	// hanmail
+				let second = items[1];	// net
+				
+				// 메일주소 앞부분 입력값검사
+				let replaceKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+				let replaceChar = /[~!@\#$%^&*\()\-=+_'\;<>\/.\`:\"\\,\[\]?|{}]/gi;
+			
+				if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
+					Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
+					Swal.fire("올바른 메일주소를 입력해주세요(정규식검사)")
+					$("#femail").val("");
+					$("#Opt").prop("selected", true);
+					return false; 
+				}
+				
+				let Final = Fmail + "@" + first + "." + second;
+				//alert(Final);	// gogus228@gmail.com
+				memail = $("#memailF").val(Final);
+				alert("femail: " + memail.val());
+				
+			} else {
+				Swal.fire("올바른 메일주소를 입력해주세요(앞메일주소)");
+				return false; 
+			} 
+		
+     	} else {
+			Swal.fire("올바른 메일주소를 입력해주세요(뒷메일주소)");
+			return false; 
+     }	
+		return memail;
+	}
+	
 
 </script>
 </head>
@@ -95,18 +130,37 @@
 		<div class="tab-content">
 			<div class="tab-pane active" id="findID">
 				<div class="col-sm-6 mb-sm-20" id="fidBox">
-					<input class="form-control input-lg" type="text" name="mname" id="fname" max="40" min="1" required="required" placeholder="이름을 입력해 주세요" /> 
-					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="이메일을 입력해 주세요" />
+					<input class="form-control input-lg" type="text" name="mname" id="fname" max="20" min="1" required placeholder="이름" /> 
+					<div class="emailBox">
+						<input class="form-control input-lg" type="email" id="femail"  max="20" min="1" required placeholder="이메일" /> 
+						<select class="form-control input-lg selectMail" id="selectBox" name="selectBox">
+							<option id="Opt">-선택-</option>
+							<option id="naver" value="@naver.com">@naver.com</option>
+							<option id="gmail" value="@gmail.com">@gmail.com</option>
+							<option id="hanmail" value="@hanmail.net">@hanmail.net</option>
+						</select>
+						<input type="hidden" name="memailF" id="memailF"/>
+					</div>
 					<div class="col-sm-10" id="fidbtnBox">
-						<a class="btn btn-lg btn-block btn-round btn-b" id="fidbtn" href="#">아이디찾기</a>
+						<button type="button" id="fidbtn">아이디찾기</button>
 					</div>
 				</div>
 			</div>
 			<div class="tab-pane" id="findPW">
-				<div class="col-sm-6 mb-sm-20">
-					<input class="form-control input-lg" type="email" name="memail" id="femail" max="40" min="1" required="required" placeholder="아이디를 입력해 주세요"/>
+				<div class="col-sm-6 mb-sm-20" id="fpwBox">
+					<input class="form-control input-lg" type="text" name="mid" id="fid" max="40" min="1" required placeholder="아이디"/>
+					<div class="emailBox">
+						<input class="form-control input-lg" type="email" id="femail2"  max="20" min="1" required placeholder="이메일" /> 
+						<select class="form-control input-lg selectMail" id="selectBox2" name="selectBox">
+							<option id="Opt">-선택-</option>
+							<option id="naver2" value="@naver.com">@naver.com</option>
+							<option id="gmail2" value="@gmail.com">@gmail.com</option>
+							<option id="hanmail2" value="@hanmail.net">@hanmail.net</option>
+						</select>
+						<input type="hidden" name="memail" id="memailF2"/>
+					</div>
 					<div class="col-sm-10" id="fpwbtnBox">
-						<a class="btn btn-lg btn-block btn-round btn-b" id="fpwbtn" href="#">비밀번호찾기</a>
+						<button type="button" id="fpwbtn">비밀번호찾기</button>
 					</div>
 				</div>
 			</div>
