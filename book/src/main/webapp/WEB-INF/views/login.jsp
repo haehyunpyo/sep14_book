@@ -76,15 +76,9 @@ function naverLogin(){
 
 $(function() {
 	
-	//쿠키 검사
-	let userID = getCookie("userID");
-	let setY = getCookie("setY");
-	let setS = getCookie("setS");
-	
-	
 	if (setS == "S"){
 		alert("자동로그인에 체크함");
-		window.location.href = "/login";
+		window.location.href = "/index";
 	}
 	else if(setY == "Y"){
 		$("#saveID").prop("checked", true);
@@ -93,7 +87,6 @@ $(function() {
 	else{
 		$("#saveID").prop("checked", false);
 	}
-	
 	
 	$("#loginbtn").click(function(){
 		
@@ -118,7 +111,9 @@ $(function() {
 		let saveIDT = $("#saveID").is(":checked"); // 아이디저장체크_ true
 		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인체크_ true
 		
+		/*
 		if(saveAllT){
+		
 			alert("S쿠키저장");
 			setCookie("SuserID", id, 2)
 			setCookie("setS", "S", 2)
@@ -132,30 +127,41 @@ $(function() {
 				data : {sid : sid, setS : setS},
 					dataType : "json",
 					success : function(data) {
-						saveIDT = false;
+						if(data.result == 1){
+							alert(data.result);
+							//saveIDT = false;
+						} else{
+							break;
+						}
 					},
 					error : function(error) {
 						alert("에러발생");
 						}
 				});
-			
-		} else if(saveIDT) {	// true
+			return false;
+		}
+		*/
+		 	
+		if(saveIDT) {	// true
 			
 			alert("쿠키저장");
 			setCookie("userID", id, 2);
 			setCookie("setY", "Y", 2);
-			saveIDT = false;
-			
-		} else if (!saveIDT) {	// false
+			check = true;
+			return false;
+		}
+		
+		if (!saveIDT) {	// false
 			
 			alert("진행x"); 
 			delCookie("userID");
 			delCookie("setY");
-		}
-
+		} 
+		
 		//login-form 최종제출
  		if(check){
-			document.getElementById('frm').submit();
+			alert("form제출")
+ 			document.getElementById('frm').submit();
 		}
 	});
 	

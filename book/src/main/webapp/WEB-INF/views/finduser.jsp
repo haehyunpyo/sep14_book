@@ -24,10 +24,7 @@
 			} 
 			else {
 				memail = checkmail(check);
-				let memailToS = memail.toString();
-				alert(memailToS);
-			
-				
+				//alert(memail);
 				
 			$.ajax({
 				url : "./findId",
@@ -57,28 +54,59 @@
 			}
 		});
 		
-
 		
 		$("#fpwbtn").click(function(){
-			checkmail();
+			
+			let check = true;
+			let mid = $("#fid").val();
+			let memail = $("#femail2").val();
+
+			if(fid == null || fid == ""){
+				Swal.fire("아이디를 입력하세요");
+				$("#fid").focus();
+			} 
+			else {
+				memail = checkmail(check);
+				//alert(memail);
+				
+				$.ajax({
+					url : "./findPW",
+					type : "post",
+					data : {mid : mid, memail : memail},
+					dataType : "json",
+					success : function(data) {
+						if(data.changepw == 1){
+							Swal.fire("비밀번호 수정 페이지로 이동합니다.")
+							// 이동
+						}
+						
+					},
+					error : function(error) {
+						alert("에러발생");
+					}
+					
+				});
+				
+			}
+			
 		});
+		
+		
 		
 	});
 
-	// 이메일 입력값 검사
+	
+	// 이메일 입력값 검사함수
 	function checkmail(check){
 		
 		// 메일주소검사
-     	let option = $("#selectBox option:selected").val();      // 선택한 메일주소값 뽑아내기
-     	let memail="";
-     	
-     	if(option != "-선택-"){
+     	let Fmail = $("#femail2").val(); 						 // 앞부분
+     	let option = $("#selectBox2 option:selected").val();      // 뒷부분(선택한 메일주소값)
+     	let Final="";											 // 최종메일주소(리턴값)
+		//alert(Fmail);   
+		
+     	if(Fmail != null && Fmail != ""){
      		
-	     // gogus228
-			let Fmail = $("#femail").val();
-			//alert(Fmail);   
-			
-			if(Fmail != null && Fmail != ""){
 				// hanmail   net
 				let items = option.slice(1).split(".");	
 				let first = items[0];	// hanmail
@@ -91,26 +119,24 @@
 				if(Fmail.match(replaceKorean) || Fmail.match(replaceChar)){
 					Fmail = Fmail.replace(replaceKorean, "").replace(replaceChar, "");
 					Swal.fire("올바른 메일주소를 입력해주세요(정규식검사)")
-					$("#femail").val("");
-					$("#Opt").prop("selected", true);
+					$("#femail2").val("");
+					$("#Opt2").prop("selected", true);
 					return false; 
 				}
 				
-				let Final = Fmail + "@" + first + "." + second;
-				//alert(Final);	// gogus228@gmail.com
-				memail = $("#memailF").val(Final);
-				alert("femail: " + memail.val());
+				if(option == "-선택-"){
+					Swal.fire("올바른 메일주소를 입력해주세요(뒷메일주소)");
+					return false; 
+			     }
+				
+				Final = Fmail + "@" + first + "." + second;
 				
 			} else {
 				Swal.fire("올바른 메일주소를 입력해주세요(앞메일주소)");
 				return false; 
 			} 
 		
-     	} else {
-			Swal.fire("올바른 메일주소를 입력해주세요(뒷메일주소)");
-			return false; 
-     }	
-		return memail;
+		return Final;
 	}
 	
 
@@ -152,7 +178,7 @@
 					<div class="emailBox">
 						<input class="form-control input-lg" type="email" id="femail2"  max="20" min="1" required placeholder="이메일" /> 
 						<select class="form-control input-lg selectMail" id="selectBox2" name="selectBox">
-							<option id="Opt">-선택-</option>
+							<option id="Opt2">-선택-</option>
 							<option id="naver2" value="@naver.com">@naver.com</option>
 							<option id="gmail2" value="@gmail.com">@gmail.com</option>
 							<option id="hanmail2" value="@hanmail.net">@hanmail.net</option>

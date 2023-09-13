@@ -12,6 +12,14 @@ public class UserService {
 	public UserDTO findId(UserDTO dto) {
 		return userDAO.findId(dto);
 	}
+
+	public UserDTO findpw(UserDTO dto) {
+		return userDAO.findpw(dto);
+	}
+
+	public int setPw(UserDTO dto) {
+		 return userDAO.setPw(dto);
+	}
 	
 	
 	

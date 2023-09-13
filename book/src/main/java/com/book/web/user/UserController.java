@@ -1,5 +1,6 @@
 package com.book.web.user;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class UserController {
 	@ResponseBody
 	@PostMapping("/findId")
 	public String finduser(UserDTO dto) throws JsonProcessingException {
-		System.out.println(dto);
+		//System.out.println(dto);
 		UserDTO result = userService.findId(dto);
 		
 		ObjectMapper jmap = new ObjectMapper();
@@ -33,6 +34,34 @@ public class UserController {
 
 		return json;
 	}
+	
+	// 비밀번호 수정페이지(임시)
+	@GetMapping("/myinfo")
+	public String myinfo() {
+		return "myinfo";
+	}
+	
+	
+	@ResponseBody
+	@PostMapping("/findPW")
+	public String findpw(UserDTO dto) {
+		JSONObject json = new JSONObject();
+
+		//System.out.println(dto);
+		UserDTO result = userService.findpw(dto);
+		System.out.println(result.getCount());
+		json.put("result", result);
+		
+		if(result.getCount() == 1) {
+			int changepw = userService.setPw(dto);
+			System.out.println(changepw);
+			json.put("changepw", changepw);
+			return json.toString();
+		}
+		return json.toString();
+	}
+	
+	
 	
 	
 	

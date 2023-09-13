@@ -10,6 +10,8 @@ public interface JoinDAO {
 
 	public int checkID(String mid);
 
-	public void subjoin(JoinDTO joinDTO);
+	public void setKakaoUser(JoinDTO joinDTO);
+
+	public void setNaverUser(JoinDTO joinDTO);
 	
 }

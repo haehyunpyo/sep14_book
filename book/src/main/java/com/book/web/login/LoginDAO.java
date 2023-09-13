@@ -13,12 +13,9 @@ public interface LoginDAO {
 
 	int hasKakaoUser(Map<String, Object> kUser);
 
-	void setKakaoUser(Map<String, Object> kUser);
-
 	Map<String, Object> autoLogin(String suserID);
 
 	int hasNaverUser(Map<String, Object> nUser);
 
-	void setNaverUser(Map<String, Object> nUser);
 
 }

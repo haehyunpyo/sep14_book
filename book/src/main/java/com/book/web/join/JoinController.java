@@ -1,7 +1,10 @@
 package com.book.web.join;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,11 +54,24 @@ public class JoinController {
 	
 	
 	@PostMapping("/login/subjoin")
-	public String subjoin(JoinDTO joinDTO) {
+	public String subjoin(JoinDTO joinDTO, HttpSession session) {
 		
-		joinService.subjoin(joinDTO);
-		//System.out.println("jsp에서 오는 값 : " + joinDTO);
-		System.out.println("k계정넣기성공");
+		
+		if(session.getAttribute("withK") != null) {
+			joinDTO.setMid(String.valueOf(session.getAttribute("mid")));
+			joinDTO.setWithK(String.valueOf(session.getAttribute("withK")));
+			
+			joinService.setKakaoUser(joinDTO);
+			
+		} else if(session.getAttribute("withN") != null) {
+			
+			joinDTO.setMid(String.valueOf(session.getAttribute("mid")));
+			joinDTO.setWithK(String.valueOf(session.getAttribute("withN")));
+			System.out.println("jsp에서 오는 값 : " + joinDTO);
+			
+			joinService.setNaverUser(joinDTO);
+		}
+
 		return "redirect:/";
 	}
 	

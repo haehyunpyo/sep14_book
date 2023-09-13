@@ -283,9 +283,7 @@ public class LoginService {
 	        }
 	        return Nmap;
 	    }
-
     
-
 	public Map<String, Object> login(Map<String, Object> map) {
 		return loginDAO.login(map);
 	}
@@ -298,10 +296,6 @@ public class LoginService {
 		return loginDAO.hasKakaoUser(kUser);
 	}
 
-	public void setKakaoUser(Map<String, Object> kUser) {
-		loginDAO.setKakaoUser(kUser);
-	}
-
 	public Map<String, Object> autoLogin(String suserID) {
 		return loginDAO.autoLogin(suserID);
 	}
@@ -310,10 +304,5 @@ public class LoginService {
 		return loginDAO.hasNaverUser(nUser);
 	}
 
-	public void setNaverUser(Map<String, Object> nUser) {
-		loginDAO.setNaverUser(nUser);
-	}
-
-	
 	
 }

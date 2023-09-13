@@ -11,10 +11,14 @@
 		SELECT COUNT(*) FROM members WHERE mid=#{mid}
 	</select>
 	
-	<update id="subjoin" parameterType="JoinDTO">
-		UPDATE members
-	    SET mname=#{mname}, maddr=#{maddr}, mpw=#{mid}
-	    WHERE memail=#{memail} and mid=#{mid}
-	</update>
+	<insert id="setKakaoUser" parameterType="Map">
+	 	INSERT INTO members (mid, mpw, memail, mconnect)
+     	VALUES(#{mid}, 1234, #{memail}, 1)
+	</insert>
 
+	<insert id="setNaverUser" parameterType="Map">
+	 	INSERT INTO members (mid, mpw, memail, mname, mphone, mconnect)
+     	VALUES(#{mid}, 1234, #{memail}, #{mname}, #{mphone}, 2)
+	</insert>
+	
 </mapper>

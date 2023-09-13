@@ -17,7 +17,12 @@ public class JoinService {
 		return joinDAO.checkID(mid);
 	}
 
-	public void subjoin(JoinDTO joinDTO) {
-		joinDAO.subjoin(joinDTO);
+	public void setKakaoUser(JoinDTO joinDTO) {
+		joinDAO.setKakaoUser(joinDTO);
+	}
+
+	public void setNaverUser(JoinDTO joinDTO) {
+		joinDAO.setNaverUser(joinDTO);
+		
 	}
 }

@@ -8,6 +8,17 @@
 		WHERE mname=#{mname} AND memail=#{memail}
 	</select>
 
+	<select id="findpw" parameterType="UserDTO" resultType="UserDTO">
+		SELECT count(*) as count
+		FROM members
+		WHERE mid=#{mid} AND memail=#{memail}
+	</select>
 
+	<update id="setPw" parameterType="JoinDTO" >
+		UPDATE members
+	    SET mpw=#{mid}
+	    WHERE mid=#{mid} AND memail=#{memail}
+	</update>
+	
 
 </mapper>
