@@ -76,94 +76,121 @@ function naverLogin(){
 
 $(function() {
 	
+	let sid = getCookie("SuserID");
+	let setS = getCookie("setS");
+	let userID = getCookie("userID");
+	let setY = getCookie("setY");
+	
 	if (setS == "S"){
-		alert("자동로그인에 체크함");
-		window.location.href = "/index";
+		
+		$.ajax({
+			url : "./login",
+			type : "post",
+			data : {sid : sid, setS : setS},
+				dataType : "json",
+				success : function(data) {
+					alert("자동로그인이 진행됩니다.");
+					if(data.auto == 1){
+											
+					} else {
+						
+					}
+					
+					//window.location.href = "/";
+				},
+				error : function(error) {
+					alert("에러발생");
+					}
+			});
+
+		return false;
 	}
-	else if(setY == "Y"){
+	
+	if(setY == "Y"){
 		$("#saveID").prop("checked", true);
 		$("#id").val(userID);
 	} 
 	else{
 		$("#saveID").prop("checked", false);
 	}
+
 	
 	$("#loginbtn").click(function(){
-		
-		let check = false;	// login-form 최종제출을 위한 변수선언
 
 		let id = $("#id").val();
 		let pw = $("#pw").val();
-		
+
 		if(id == "" || id.length < 3){
 			Swal.fire('아이디를 입력해주세요.');
 			$("#id").focus();
+			return false;
 		} 
-		else if(pw.length < 3) {
+		
+		if(pw.length < 3) {
 			Swal.fire('비밀번호를 입력해주세요.');
 			$("#pw").focus();
+			return false;
 		}  
-		else{
-			check = true;
-		}
 		
-		// 체크여부확인
 		let saveIDT = $("#saveID").is(":checked"); // 아이디저장체크_ true
 		let saveAllT = $("#saveAll").is(":checked"); // 자동로그인체크_ true
 		
-		/*
 		if(saveAllT){
-		
+///************************************ 2023-09-14 ************************************	
 			alert("S쿠키저장");
-			setCookie("SuserID", id, 2)
-			setCookie("setS", "S", 2)
-			
-			let sid = getCookie("SuserID");
-			let setS = getCookie("setS");
+
+			sid = getCookie("SuserID");
 			
 			$.ajax({
-				url : "./autoLogin",
+				url : "./autoCheck",
 				type : "post",
-				data : {sid : sid, setS : setS},
+				data : {mid : mid, mpw : mpw},
 					dataType : "json",
 					success : function(data) {
 						if(data.result == 1){
-							alert(data.result);
-							//saveIDT = false;
-						} else{
-							break;
-						}
+							alert("이게더 먼저");
+							
+							setCookie("SuserID", id, 7);
+							setCookie("setS", "S", 7);
+							
+							frmsubmit();
+							saveIDT = false;
+						} 
 					},
 					error : function(error) {
 						alert("에러발생");
 						}
 				});
-			return false;
+		return false;
 		}
-		*/
-		 	
+		
+		
 		if(saveIDT) {	// true
 			
-			alert("쿠키저장");
+			alert("아이디저장");
 			setCookie("userID", id, 2);
 			setCookie("setY", "Y", 2);
-			check = true;
+			frmsubmit();
 			return false;
 		}
 		
-		if (!saveIDT) {	// false
+		if(!saveIDT) {	// false
 			
-			alert("진행x"); 
+			alert("걍로그인"); 
 			delCookie("userID");
 			delCookie("setY");
+			frmsubmit();
+			return false;
 		} 
 		
 		//login-form 최종제출
- 		if(check){
-			alert("form제출")
- 			document.getElementById('frm').submit();
+ 		function frmsubmit(){
+			alert("form제출");
+ 			//document.getElementById('frm').submit();
 		}
+		
 	});
+
 	
 	
 	// 쿠키 저장
@@ -204,6 +231,7 @@ $(function() {
 			}
 		}
 	}
+	
 
 });
 
@@ -215,7 +243,7 @@ $(function() {
   
 	<div class="Lcontainer" align="center">
 		<div class="login-form" align="center">
-			<form action="/login" method="post" id="frm">
+			<form action="./login" method="post" id="frm">
 				<div class="form-item idBox">
 					<input type="text" name="id" id="id" placeholder="아이디를 입력하세요">
 				</div>

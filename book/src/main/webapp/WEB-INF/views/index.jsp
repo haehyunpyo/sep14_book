@@ -29,9 +29,13 @@ function naverLogout(){
 		let setY = getCookie("setY");
 		
 		$("#logoutbtn").click(function(){
-				//delCookie("SuserID");
-				//delCookie("setS");
-				Logout();
+			Logout();
+		});
+		
+		$("#outauto").click(function(){
+			delCookie("SuserID");
+			delCookie("setS");
+			Logout();
 		});
 		
 		// 쿠키 삭제
@@ -91,6 +95,10 @@ function naverLogout(){
            		<c:when test="${sessionScope.mid ne null}"> id : ${sessionScope.mid} _ 로그인완</c:when>
             	<c:otherwise>로그아웃상태 </c:otherwise>
          	</c:choose>
+      	</div>
+      	
+      	<div>
+      		<button type="button" id="outauto">자동로그인 해제</button>
       	</div>
 	
 </body>

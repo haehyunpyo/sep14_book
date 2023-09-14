@@ -89,7 +89,7 @@
        // 메일주소검사
      	let option = $("#selectBox option:selected").val();      // 선택한 메일주소값 뽑아내기
      	
-     	if(option == "-선택-"){
+     	if(option != "-선택-"){
      		
 	     // gogus228
 			let Fmail = $(this).parent('div').siblings(".emailBox").children("#memail").val();
@@ -127,6 +127,7 @@
 			Swal.fire("올바른 메일주소를 입력해주세요(뒷메일주소)");
 			return false; 
      }	
+
 	
   	});
        
@@ -152,7 +153,7 @@ window.onload = function(){
 </head>
 <body>
   <%@ include file="menu.jsp"%>
-   <form action="./join" method="post">
+   <form action="./join" method="post" id="frm">
       <div class="join-div" align="center">
          <div>
             <h1>회원가입<br></h1>

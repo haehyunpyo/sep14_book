@@ -32,67 +32,53 @@ public class LoginController {
 
 	
 	@GetMapping({"/", "/index"})
-	public String getCookie(@CookieValue(name = "setS", required = false) String setS,
-							@CookieValue(name = "SuserID", required = false) String SuserID, HttpSession session) {
-		
-	    if ( setS == null || SuserID == null ) {	// 메인페이지 (setS 쿠키가 없거나 값이 "S"가 아닌 경우)
-			return "index";
-			
-	    } else if(setS.equals("S")) { 				// 자동로그인 진행 (setS 쿠키의 값이 "S"가 아닌 경우)
-			//System.out.println(SuserID);
-			Map<String, Object> autoresult = loginService.autoLogin(SuserID);	// 쿠키id와 디비id 일치여부확인
-			
-			if (String.valueOf(autoresult.get("autocount")).equals("1")) {
-				
-				session.setAttribute("mid", autoresult.get("mid"));
-				session.setAttribute("mname", autoresult.get("mname"));
-				System.out.println("됨??");
-				
-			//	return "redirect:/index";
-			}
-		}
+	public String index() {
 		return "index";
 	}
-		
 	
+	@ResponseBody
 	@PostMapping("/login")
-	public String login(@CookieValue(name = "setS", required = false) String setS,
-			@CookieValue(name = "SuserID", required = false) String SuserID,
-			@RequestParam Map<String, Object> map, HttpSession session) {
-
-		// if ( setS == null || SuserID == null ) {
-			 
-				// 일반로그인 진행
-				System.out.println(map);
+	public String login(@RequestParam Map<String, Object> map, HttpSession session) {
+			JSONObject json = new JSONObject();
+		
+			// 일반로그인 진행
+			System.out.println("이거가져온거?:" +map);
+			
+			if(map.get("setS") != null ) {
+				
+				int result = loginService.hasAuto(map);
+				System.out.println("auto값 : " + result);
+				session.setAttribute("mid", map.get("sid"));
+				System.out.println("이거작동?");
+				json.put("auto", result);
+				return json.toString();
+				
+			} else {
 				Map<String, Object> result = loginService.login(map);
-				// System.out.println(result);
+				
 				if (String.valueOf(result.get("count")).equals("1")) {
 					
 					session.setAttribute("mid", result.get("mid"));
 					session.setAttribute("mname", result.get("mname"));
-					//System.out.println(session.getAttribute("mname"));
+					System.out.println("일반로그인완");
 					
-					return "redirect:/booklist";
-				}
-				
-		// } else if ( setS.equals("S") ) {
-		//		return "redirect:/booklist";
-		//	}
-		return "login";
+					return json.toString();
+				} 
+			}
+		return json.toString();
 	}
 
 	
 	  @ResponseBody
-	  @PostMapping("/autoLogin") public String autoCheck(@RequestParam("sid") String sid, HttpSession session) {
+	  @PostMapping("/autoCheck") 
+	  public String autoCheck(@RequestParam Map<String, Object> map, HttpSession session) {
 	  
 		  JSONObject json = new JSONObject();
 		  
-		  session.setAttribute("mid", sid);
-		  System.out.println(session.getAttribute("mid"));
-		  
-		  int result = loginService.autoCheck(sid);
-		  json.put("result", result);
-		  System.out.println(result);
+		  System.out.println(map);
+		  //int result = loginService.autoCheck(map);	// 해당 id에 대한 auto를 1로설정
+		  //json.put("result", result);
+		  //System.out.println("result의 값 : "+result);
 	
 		  return json.toString(); 
 	  }
@@ -104,7 +90,7 @@ public class LoginController {
 			if(session.getAttribute("mid") != null) {
 				session.invalidate();
 				System.out.println("로그아웃!!!");
-				return "redirect:/login";
+				return "redirect:/index";
 			}
 			return "redirect:/index";
 		}

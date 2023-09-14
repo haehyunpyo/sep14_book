@@ -288,20 +288,24 @@ public class LoginService {
 		return loginDAO.login(map);
 	}
 
-	public int autoCheck(String sid) {
-		return loginDAO.autoCheck(sid);
+	public int autoCheck(Map<String, Object> map) {
+		return loginDAO.autoCheck(map);
 	}
 
 	public int hasKakaoUser(Map<String, Object> kUser) {
 		return loginDAO.hasKakaoUser(kUser);
 	}
 
-	public Map<String, Object> autoLogin(String suserID) {
-		return loginDAO.autoLogin(suserID);
-	}
-
 	public int hasNaverUser(Map<String, Object> nUser) {
 		return loginDAO.hasNaverUser(nUser);
+	}
+
+	public Map<String, Object> autologin(String suserID) {
+		return loginDAO.autologin(suserID);
+	}
+
+	public int hasAuto(Map<String, Object> map) {
+		return loginDAO.hasAuto(map);
 	}
 
 	

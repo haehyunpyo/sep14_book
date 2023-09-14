@@ -26,9 +26,7 @@ public class JoinController {
 		System.out.println("jsp에서 오는 값 : " + joinDTO);
 		
 		int result = joinService.join(joinDTO);
-		//JSONObject json= new JSONObject();
-		//json.put("result", "josn");
-		System.out.println(result);
+		//System.out.println(result);
 		
 		if(result == 1) {
 			return "redirect:/login";
